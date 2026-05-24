@@ -3,1042 +3,483 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aayush Khadangale — Java Backend Developer</title>
-  <meta name="description" content="Java Backend Developer specializing in Spring Boot, AEM, REST APIs, Hibernate, and MySQL." />
+  <meta name="description" content="Aayush Khadangale – Java Backend & Full Stack Developer at Bajaj Finserv. Building scalable enterprise systems." />
+  <title>Aayush Khadangale — Software Developer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
-  <style>
-    /* ─── RESET & VARIABLES ─── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #07080f;
-      --bg2: #0d0f1e;
-      --bg3: #111428;
-      --surface: rgba(255,255,255,0.04);
-      --border: rgba(255,255,255,0.08);
-      --text: #e2e8f0;
-      --muted: #7888a4;
-      --accent: #7aa2f7;
-      --accent2: #bb9af7;
-      --accent3: #9ece6a;
-      --grad: linear-gradient(135deg, #7aa2f7, #bb9af7);
-      --glow: 0 0 40px rgba(122,162,247,0.15);
-      --radius: 16px;
-      --nav-h: 70px;
-    }
-    [data-theme="light"] {
-      --bg: #f4f6fb;
-      --bg2: #eaecf5;
-      --bg3: #e0e3f0;
-      --surface: rgba(0,0,0,0.04);
-      --border: rgba(0,0,0,0.1);
-      --text: #1a1d2e;
-      --muted: #5a6480;
-      --accent: #3d6fe8;
-      --accent2: #7c3aed;
-    }
-
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
-
-    /* ─── CUSTOM CURSOR ─── */
-    .cursor-dot, .cursor-ring {
-      position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; transition: opacity .3s;
-    }
-    .cursor-dot { width: 6px; height: 6px; background: var(--accent); transform: translate(-50%,-50%); }
-    .cursor-ring { width: 32px; height: 32px; border: 1.5px solid var(--accent); transform: translate(-50%,-50%); transition: transform .12s ease, width .2s, height .2s; }
-
-    /* ─── LOADER ─── */
-    .loader {
-      position: fixed; inset: 0; background: var(--bg); z-index: 9000;
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity .5s ease, visibility .5s ease;
-    }
-    .loader.hide { opacity: 0; visibility: hidden; }
-    .loader__inner { text-align: center; }
-    .loader__bar {
-      width: 200px; height: 3px; background: var(--border); border-radius: 10px; overflow: hidden; margin: 0 auto 12px;
-    }
-    .loader__bar::after {
-      content: ''; display: block; height: 100%; width: 0%;
-      background: var(--grad); border-radius: 10px;
-      animation: loadbar 1.4s ease forwards;
-    }
-    @keyframes loadbar { to { width: 100%; } }
-    .loader__text { font-family: 'Syne', sans-serif; font-size: .85rem; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
-
-    /* ─── NAV ─── */
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: var(--nav-h); backdrop-filter: blur(20px);
-      border-bottom: 1px solid transparent;
-      transition: border-color .3s, background .3s;
-    }
-    .nav.scrolled { border-color: var(--border); background: rgba(7,8,15,.8); }
-    .nav__container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; height: 100%; display: flex; align-items: center; gap: 2rem; }
-    .nav__logo { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--text); text-decoration: none; }
-    .nav__logo span { color: var(--accent); }
-    .nav__links { display: flex; list-style: none; gap: .25rem; margin-left: auto; }
-    .nav__link { display: block; padding: .4rem .8rem; font-size: .875rem; color: var(--muted); text-decoration: none; border-radius: 8px; transition: color .2s, background .2s; }
-    .nav__link:hover, .nav__link.active { color: var(--text); background: var(--surface); }
-    .nav__controls { display: flex; align-items: center; gap: .75rem; }
-    .theme-toggle {
-      width: 36px; height: 36px; border: 1px solid var(--border); background: var(--surface);
-      border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; color: var(--text); transition: border-color .2s, background .2s;
-    }
-    .theme-toggle:hover { border-color: var(--accent); }
-    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .65rem 1.4rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: .875rem; font-weight: 500; text-decoration: none; cursor: pointer; transition: all .2s; border: none; }
-    .btn--primary { background: var(--grad); color: #fff; box-shadow: 0 4px 20px rgba(122,162,247,.3); }
-    .btn--primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(122,162,247,.4); }
-    .btn--ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-    .btn--ghost:hover { border-color: var(--accent); color: var(--accent); }
-    .btn--outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
-    .btn--outline:hover { border-color: var(--accent); color: var(--accent); }
-    .btn--sm { padding: .45rem 1rem; font-size: .8rem; }
-    .btn--full { width: 100%; justify-content: center; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; }
-    .mobile-menu {
-      display: none; position: fixed; inset: 0; background: var(--bg); z-index: 99;
-      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-link { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); text-decoration: none; transition: color .2s; }
-    .mobile-link:hover { color: var(--accent); }
-
-    /* ─── HERO ─── */
-    .hero {
-      min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden;
-      padding-top: var(--nav-h);
-    }
-    canvas.particles-canvas { position: absolute; inset: 0; z-index: 0; }
-    .hero__container { max-width: 1200px; margin: 0 auto; padding: 2rem; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
-    .hero__greeting { font-size: .85rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: .5rem; }
-    .hero__name { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; line-height: 1.05; margin-bottom: .75rem; background: linear-gradient(135deg, var(--text) 40%, var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .hero__tagline { font-family: 'Syne', sans-serif; font-size: clamp(1.1rem, 2.5vw, 1.6rem); font-weight: 600; color: var(--accent); min-height: 2em; margin-bottom: 1rem; }
-    .cursor-blink { animation: blink 1s step-end infinite; color: var(--accent); }
-    @keyframes blink { 50% { opacity: 0; } }
-    .hero__bio { color: var(--muted); font-size: 1rem; max-width: 500px; margin-bottom: 2rem; }
-    .hero__cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
-    .hero__socials { display: flex; gap: .75rem; }
-    .social-icon { width: 38px; height: 38px; border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--muted); text-decoration: none; transition: all .2s; }
-    .social-icon svg { width: 16px; height: 16px; }
-    .social-icon:hover { border-color: var(--accent); color: var(--accent); background: rgba(122,162,247,.08); transform: translateY(-2px); }
-    .hero__visual { display: flex; align-items: center; justify-content: center; position: relative; height: 420px; }
-    .hero__orb {
-      width: 320px; height: 320px; border-radius: 50%;
-      background: radial-gradient(circle at 40% 40%, rgba(122,162,247,.18), rgba(187,154,247,.1) 60%, transparent);
-      position: absolute; filter: blur(30px);
-      animation: orbFloat 6s ease-in-out infinite;
-    }
-    @keyframes orbFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.04); } }
-    .hero__card-stack { position: relative; z-index: 1; }
-    .hero__float-card {
-      display: flex; align-items: center; gap: .6rem; padding: .65rem 1.1rem;
-      background: rgba(13,15,30,.8); border: 1px solid var(--border);
-      border-radius: 12px; font-size: .875rem; font-weight: 500;
-      backdrop-filter: blur(12px); white-space: nowrap;
-      position: absolute;
-    }
-    .hero__float-card--1 { top: 0; right: 0; animation: fc1 4s ease-in-out infinite; }
-    .hero__float-card--2 { bottom: 80px; left: -40px; animation: fc2 5s ease-in-out infinite .5s; }
-    .hero__float-card--3 { bottom: 0; right: 20px; animation: fc1 4.5s ease-in-out infinite 1s; }
-    @keyframes fc1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-    @keyframes fc2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(10px)} }
-    .float-icon { font-size: 1.1rem; }
-    .scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .5rem; z-index: 1; }
-    .scroll-indicator__wheel { width: 22px; height: 36px; border: 2px solid var(--border); border-radius: 11px; position: relative; }
-    .scroll-indicator__wheel::after { content: ''; position: absolute; width: 4px; height: 8px; background: var(--accent); border-radius: 2px; top: 6px; left: 50%; transform: translateX(-50%); animation: scrollWheel 1.5s ease-in-out infinite; }
-    @keyframes scrollWheel { 0%,100%{opacity:1;top:6px} 50%{opacity:.3;top:18px} }
-
-    /* ─── SECTIONS ─── */
-    .section { padding: 6rem 0; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-    .section-header { text-align: center; margin-bottom: 4rem; }
-    .section-label { display: inline-block; font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); background: rgba(122,162,247,.1); padding: .3rem .9rem; border-radius: 20px; border: 1px solid rgba(122,162,247,.2); margin-bottom: 1rem; }
-    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; }
-    .glass-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); backdrop-filter: blur(8px); transition: border-color .3s, box-shadow .3s; }
-    .glass-card:hover { border-color: rgba(122,162,247,.3); box-shadow: var(--glow); }
-
-    /* ─── ABOUT ─── */
-    .about__grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start; }
-    .about__visual { display: flex; flex-direction: column; align-items: center; gap: 2rem; }
-    .about__avatar { position: relative; width: 240px; height: 240px; }
-    .about__avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; position: relative; z-index: 1; border: 3px solid var(--border); }
-    .about__avatar-placeholder {
-      position: absolute; inset: 0; border-radius: 50%;
-      background: var(--bg3); border: 2px dashed var(--border);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: .75rem; color: var(--muted); text-align: center; gap: .5rem; cursor: pointer;
-      transition: border-color .2s;
-    }
-    .about__avatar-placeholder:hover { border-color: var(--accent); color: var(--accent); }
-    .about__avatar-placeholder .upload-icon { font-size: 1.8rem; }
-    .about__avatar-ring { position: absolute; inset: -8px; border-radius: 50%; border: 2px solid transparent; background: var(--grad) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: destination-out; mask-composite: exclude; animation: spin 8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    #photoInput { display: none; }
-    .about__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; width: 100%; }
-    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; text-align: center; }
-    .stat-number { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .stat-label { display: block; font-size: .75rem; color: var(--muted); margin-top: .25rem; }
-    .about__heading { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
-    .about__text { color: var(--muted); margin-bottom: 1rem; }
-    .about__text strong { color: var(--text); }
-    .about__highlights { display: flex; flex-direction: column; gap: .5rem; margin: 1.5rem 0; }
-    .highlight { display: flex; align-items: center; gap: .75rem; font-size: .9rem; color: var(--muted); }
-
-    /* ─── SKILLS ─── */
-    .skills { background: var(--bg2); }
-    .skills__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .skill-category { padding: 1.75rem; }
-    .skill-category__header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.5rem; }
-    .skill-category__icon { font-size: 1.5rem; }
-    .skill-category__header h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; }
-    .skill-bars { display: flex; flex-direction: column; gap: 1rem; }
-    .skill-bar__label { display: flex; justify-content: space-between; font-size: .85rem; margin-bottom: .4rem; }
-    .skill-bar__pct { color: var(--accent); font-weight: 500; }
-    .skill-bar__track { height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; }
-    .skill-bar__fill { height: 100%; background: var(--grad); border-radius: 10px; width: 0; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .skill-tag { padding: .35rem .75rem; background: rgba(122,162,247,.08); border: 1px solid rgba(122,162,247,.2); border-radius: 8px; font-size: .8rem; color: var(--accent); }
-
-    /* ─── TIMELINE ─── */
-    .timeline { position: relative; max-width: 900px; margin: 0 auto; }
-    .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--border); transform: translateX(-50%); }
-    .timeline__item { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 1.5rem; align-items: start; margin-bottom: 3rem; }
-    .timeline__item--right .timeline__card { grid-column: 3; }
-    .timeline__item:not(.timeline__item--right) .timeline__card { grid-column: 1; }
-    .timeline__item:not(.timeline__item--right) .timeline__card { text-align: right; }
-    .timeline__dot { width: 14px; height: 14px; background: var(--accent); border-radius: 50%; margin: 1.5rem auto 0; box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px rgba(122,162,247,.3); grid-column: 2; }
-    .timeline__card { padding: 1.5rem; }
-    .timeline__meta { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: .75rem; }
-    .timeline__item:not(.timeline__item--right) .timeline__meta { flex-direction: row-reverse; }
-    .timeline__date { font-size: .8rem; color: var(--muted); }
-    .timeline__badge { font-size: .75rem; background: rgba(122,162,247,.1); color: var(--accent); border: 1px solid rgba(122,162,247,.2); padding: .1rem .6rem; border-radius: 20px; }
-    .timeline__role { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: .25rem; }
-    .timeline__company { font-size: .875rem; color: var(--accent2); margin-bottom: .75rem; }
-    .timeline__desc { font-size: .85rem; color: var(--muted); line-height: 1.6; margin-bottom: .75rem; }
-    .timeline__tags { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .timeline__item:not(.timeline__item--right) .timeline__tags { justify-content: flex-end; }
-    .timeline__tags span { font-size: .75rem; background: var(--surface); border: 1px solid var(--border); padding: .2rem .6rem; border-radius: 6px; color: var(--muted); }
-
-    /* ─── PROJECTS ─── */
-    .projects { background: var(--bg2); }
-    .projects__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem; }
-    .project-card { padding: 1.75rem; position: relative; overflow: hidden; transition: transform .3s; }
-    .project-card:hover { transform: translateY(-4px); }
-    .project-card__glow { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 0%, rgba(122,162,247,.06), transparent 60%); pointer-events: none; }
-    .project-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
-    .project-card__number { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--border); }
-    .project-card__links { display: flex; gap: .5rem; }
-    .project-link { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); text-decoration: none; transition: all .2s; }
-    .project-link:hover { border-color: var(--accent); color: var(--accent); }
-    .project-card__icon { font-size: 2.5rem; margin-bottom: .75rem; }
-    .project-card__body h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: .6rem; }
-    .project-card__body p { font-size: .875rem; color: var(--muted); line-height: 1.6; }
-    .project-card__footer { margin-top: 1.25rem; }
-    .project-card__tags { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .project-card__tags span { font-size: .75rem; background: rgba(122,162,247,.08); border: 1px solid rgba(122,162,247,.15); color: var(--accent); padding: .2rem .65rem; border-radius: 6px; }
-
-    /* ─── CERTIFICATIONS ─── */
-    .certs__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
-    .cert-card { padding: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
-    .cert-card__icon { font-size: 2rem; }
-    .cert-card__body h3 { font-size: .95rem; font-weight: 600; line-height: 1.4; }
-    .cert-card__issuer { font-size: .8rem; color: var(--accent); }
-    .cert-card__date { font-size: .75rem; color: var(--muted); }
-    .cert-card__link { margin-top: auto; font-size: .8rem; color: var(--accent); text-decoration: none; }
-    .cert-card__link:hover { text-decoration: underline; }
-
-    /* ─── GITHUB ─── */
-    .github { background: var(--bg2); }
-    .github__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
-    .github__stats { display: flex; flex-direction: column; gap: 1.25rem; }
-    .github__stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
-    .github__stat-title { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1rem; font-weight: 500; }
-    .github__stat-numbers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-    .github__stat-item { text-align: center; }
-    .github__stat-num { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .github__stat-lbl { font-size: .75rem; color: var(--muted); margin-top: .2rem; }
-    .github__langs { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
-    .github__langs-title { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1rem; font-weight: 500; }
-    .lang-bar { margin-bottom: .75rem; }
-    .lang-bar__label { display: flex; justify-content: space-between; font-size: .82rem; margin-bottom: .35rem; }
-    .lang-bar__pct { color: var(--muted); }
-    .lang-bar__track { height: 8px; background: var(--border); border-radius: 8px; overflow: hidden; }
-    .lang-bar__fill { height: 100%; border-radius: 8px; transition: width 1.2s ease; }
-    .github__contrib-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
-    .github__contrib-title { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1rem; font-weight: 500; }
-    .contrib-grid { display: grid; grid-template-columns: repeat(52, 1fr); gap: 2px; }
-    .contrib-cell { aspect-ratio: 1; border-radius: 2px; background: var(--border); }
-    .contrib-cell.l1 { background: rgba(122,162,247,.2); }
-    .contrib-cell.l2 { background: rgba(122,162,247,.4); }
-    .contrib-cell.l3 { background: rgba(122,162,247,.7); }
-    .contrib-cell.l4 { background: var(--accent); }
-    .github__cta { text-align: center; }
-    .github__username { font-size: .875rem; color: var(--muted); margin-bottom: 1rem; text-align: center; }
-    .github__username a { color: var(--accent); }
-
-    /* ─── CONTACT ─── */
-    .contact__grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start; }
-    .contact__intro { font-size: 1.05rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.7; }
-    .contact__details { display: flex; flex-direction: column; gap: 1rem; }
-    .contact__item { display: flex; align-items: center; gap: .75rem; font-size: .9rem; }
-    .contact__item-icon { font-size: 1.2rem; }
-    .contact__item a { color: var(--text); text-decoration: none; }
-    .contact__item a:hover { color: var(--accent); }
-    .form-group { position: relative; margin-bottom: 1.25rem; }
-    .form-input {
-      width: 100%; padding: 1rem 1.1rem; background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text); font-family: inherit; font-size: .9rem;
-      outline: none; transition: border-color .2s;
-    }
-    .form-input:focus { border-color: var(--accent); }
-    .form-textarea { resize: vertical; min-height: 130px; }
-    .form-label { position: absolute; left: 1rem; top: 1rem; color: var(--muted); font-size: .9rem; pointer-events: none; transition: all .2s; background: transparent; }
-    .form-input:focus ~ .form-label,
-    .form-input:not(:placeholder-shown) ~ .form-label { top: -.6rem; left: .75rem; font-size: .75rem; background: var(--bg); padding: 0 .25rem; color: var(--accent); }
-    .form-note { font-size: .8rem; color: var(--muted); margin-top: .75rem; text-align: center; }
-    .form-note a { color: var(--accent); }
-
-    /* ─── FOOTER ─── */
-    .footer { border-top: 1px solid var(--border); padding: 2rem 0; }
-    .footer__container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    .footer__left p { font-size: .85rem; color: var(--muted); margin-top: .25rem; }
-    .footer__socials { display: flex; gap: .5rem; }
-    .footer__right { font-size: .8rem; color: var(--muted); }
-
-    /* ─── AOS-LIKE ANIMATIONS ─── */
-    [data-aos] { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-    [data-aos].aos-animate { opacity: 1; transform: translateY(0); }
-    [data-aos="fade-right"] { transform: translateX(-24px); }
-    [data-aos="fade-right"].aos-animate { transform: translateX(0); }
-    [data-aos="fade-left"] { transform: translateX(24px); }
-    [data-aos="fade-left"].aos-animate { transform: translateX(0); }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 900px) {
-      .hero__container, .about__grid, .contact__grid { grid-template-columns: 1fr; }
-      .hero__visual { display: none; }
-      .skills__grid { grid-template-columns: 1fr; }
-      .github__grid { grid-template-columns: 1fr; }
-      .timeline::before { left: 20px; }
-      .timeline__item { grid-template-columns: 40px 1fr; }
-      .timeline__item--right .timeline__card, .timeline__item:not(.timeline__item--right) .timeline__card { grid-column: 2; text-align: left; }
-      .timeline__item:not(.timeline__item--right) .timeline__meta { flex-direction: row; }
-      .timeline__item:not(.timeline__item--right) .timeline__tags { justify-content: flex-start; }
-      .timeline__dot { grid-column: 1; margin: 1.5rem 0 0; }
-      .nav__links { display: none; }
-      .hamburger { display: flex; }
-      .nav__controls .btn--sm { display: none; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
 
-<div class="loader" id="loader">
-  <div class="loader__inner">
-    <div class="loader__bar"></div>
-    <span class="loader__text">Loading Portfolio</span>
-  </div>
-</div>
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursorFollower"></div>
 
-<!-- NAV -->
-<nav class="nav" id="navbar">
-  <div class="nav__container">
-    <a href="#hero" class="nav__logo">AK<span>.</span></a>
-    <ul class="nav__links" id="navLinks">
-      <li><a href="#about"          class="nav__link">About</a></li>
-      <li><a href="#skills"         class="nav__link">Skills</a></li>
-      <li><a href="#experience"     class="nav__link">Experience</a></li>
-      <li><a href="#projects"       class="nav__link">Projects</a></li>
-      <li><a href="#certifications" class="nav__link">Certs</a></li>
-      <li><a href="#github"         class="nav__link">GitHub</a></li>
-      <li><a href="#contact"        class="nav__link">Contact</a></li>
+<!-- Ambient Background Canvas -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- ═══════════════════════════════ NAVBAR ═══════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero">AK<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
-    <div class="nav__controls">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀</button>
-      <a href="MainResume.pdf" download class="btn btn--sm btn--outline">Resume</a>
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <div class="nav-actions">
+      <a href="MainResume.pdf" download="MainResume.pdf" class="btn-resume-nav" aria-label="Download Resume">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Resume</span>
+      </a>
+      <!-- Theme Toggle -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <div class="toggle-track">
+          <div class="toggle-thumb">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </div>
+        </div>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" class="mob-link">About</a>
+    <a href="#skills" class="mob-link">Skills</a>
+    <a href="#experience" class="mob-link">Experience</a>
+    <a href="#projects" class="mob-link">Projects</a>
+    <a href="#certifications" class="mob-link">Certifications</a>
+    <a href="#contact" class="mob-link">Contact</a>
+    <a href="MainResume.pdf" download="MainResume.pdf" class="mob-link mob-resume">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Resume
+    </a>
+  </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
-  <ul style="list-style:none;text-align:center;display:flex;flex-direction:column;gap:1.5rem">
-    <li><a href="#about"          class="mobile-link">About</a></li>
-    <li><a href="#skills"         class="mobile-link">Skills</a></li>
-    <li><a href="#experience"     class="mobile-link">Experience</a></li>
-    <li><a href="#projects"       class="mobile-link">Projects</a></li>
-    <li><a href="#certifications" class="mobile-link">Certifications</a></li>
-    <li><a href="#github"         class="mobile-link">GitHub</a></li>
-    <li><a href="#contact"        class="mobile-link">Contact</a></li>
-  </ul>
-</div>
-
-<main>
-
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <canvas class="particles-canvas" id="particlesCanvas"></canvas>
-    <div class="hero__container">
-      <div class="hero__content">
-        <p class="hero__greeting">Hello, I'm</p>
-        <h1 class="hero__name">Aayush Khadangale</h1>
-        <h2 class="hero__tagline">
-          <span id="typedText"></span><span class="cursor-blink">|</span>
-        </h2>
-        <p class="hero__bio">
-          Java Backend Developer skilled in Spring Boot, REST APIs, Hibernate, MySQL, and Adobe Experience Manager (AEM) — building scalable enterprise applications at Bajaj Finserv Direct Limited.
-        </p>
-        <div class="hero__cta">
-          <a href="#projects" class="btn btn--primary">View My Work</a>
-          <a href="#contact"  class="btn btn--ghost">Get In Touch</a>
-        </div>
-        <div class="hero__socials">
-          <a href="https://github.com/AayushKhadangale" target="_blank" class="social-icon" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.93 10.93 0 0 1 5.74 0c2.18-1.48 3.14-1.17 3.14-1.17.63 1.57.23 2.73.11 3.02.74.8 1.18 1.82 1.18 3.07 0 4.41-2.69 5.38-5.25 5.66.41.36.78 1.07.78 2.15v3.19c0 .3.2.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
-          </a>
-          <a href="https://linkedin.com/in/aayush-khadangale" target="_blank" class="social-icon" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.58 0 4.24 2.36 4.24 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z"/></svg>
-          </a>
-          <a href="mailto:aayushkhadangale2642@gmail.com" class="social-icon" aria-label="Email">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 2-8 5-8-5h16zm0 12H4V8.236l8 5 8-5V18z"/></svg>
-          </a>
-        </div>
-      </div>
-      <div class="hero__visual">
-        <div class="hero__orb"></div>
-        <div class="hero__card-stack">
-          <div class="hero__float-card hero__float-card--1"><span class="float-icon">☕</span><span>Java Developer</span></div>
-          <div class="hero__float-card hero__float-card--2"><span class="float-icon">🌿</span><span>AEM / Spring Boot</span></div>
-          <div class="hero__float-card hero__float-card--3"><span class="float-icon">⚡</span><span>Bajaj Finserv</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="scroll-indicator"><div class="scroll-indicator__wheel"></div></div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="section about" id="about">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <span class="section-label">01 — About</span>
-        <h2 class="section-title">Who I Am</h2>
-      </div>
-      <div class="about__grid">
-        <div class="about__visual" data-aos="fade-right" data-aos-delay="100">
-          <div class="about__avatar" id="avatarWrap" title="Click to upload your photo">
-            <!-- Photo will show here after upload; placeholder shows otherwise -->
-            <img src="{css,js,assets}/AayushIMG.png" height="1195" width="896"/><img id="avatarImg" src="AayushIMG.png" alt="Aayush Khadangale" style="display:none" />
-            <div class="about__avatar-placeholder" id="avatarPlaceholder" onclick="document.getElementById('photoInput').click()">
-              <span class="upload-icon">📷</span>
-              <span>Click to upload<br/>your photo</span>
-            </div>
-            <div class="about__avatar-ring"></div>
-            <input type="file" id="photoInput" accept="image/*" />
-          </div>
-          <div class="about__stats">
-            <div class="stat-card">
-              <span class="stat-number" data-target="1">0</span>+
-              <span class="stat-label">Years Exp.</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-number" data-target="10">0</span>+
-              <span class="stat-label">Projects</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-number" data-target="5">0</span>+
-              <span class="stat-label">Certifications</span>
-            </div>
-          </div>
-        </div>
-        <div class="about__content" data-aos="fade-left" data-aos-delay="200">
-          <h3 class="about__heading">Building Scalable Enterprise Systems with Precision</h3>
-          <p class="about__text">
-            I'm a <strong>Java Backend Developer</strong> based in Pune, Maharashtra, currently working at <strong>Bajaj Finserv Direct Limited</strong>. I specialize in Spring Boot REST APIs, Adobe Experience Manager (AEM) components, and enterprise-grade backend systems.
-          </p>
-          <p class="about__text">
-            I have hands-on experience with <strong>Sling Models, OSGi Services, Hibernate/JPA, MySQL optimization</strong>, and integrating Adobe Journey Optimizer and Adobe Target in production Agile environments. I focus on clean, scalable, maintainable code.
-          </p>
-          <div class="about__highlights">
-            <div class="highlight">🎓 B.Tech Computer Science — MIT-WPU, Pune (CGPA: 7.32)</div>
-            <div class="highlight">📍 Pune, Maharashtra, India</div>
-            <div class="highlight">💼 Java Backend Developer @ Bajaj Finserv Direct Limited</div>
-            <div class="highlight">🚀 AEM • Spring Boot • Hibernate • MySQL • REST APIs</div>
-          </div>
-          <a href="#contact" class="btn btn--primary">Let's Talk →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section class="section skills" id="skills">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <span class="section-label">02 — Skills</span>
-        <h2 class="section-title">My Tech Stack</h2>
-      </div>
-      <div class="skills__grid">
-        <div class="skill-category glass-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="skill-category__header">
-            <span class="skill-category__icon">⚙️</span>
-            <h3>Backend</h3>
-          </div>
-          <div class="skill-bars">
-            <div class="skill-bar">
-              <div class="skill-bar__label"><span>Java 8/17</span><span class="skill-bar__pct">90%</span></div>
-              <div class="skill-bar__track"><div class="skill-bar__fill" data-width="90"></div></div>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-bar__label"><span>Spring Boot / MVC</span><span class="skill-bar__pct">82%</span></div>
-              <div class="skill-bar__track"><div class="skill-bar__fill" data-width="82"></div></div>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-bar__label"><span>Hibernate / JPA</span><span class="skill-bar__pct">78%</span></div>
-              <div class="skill-bar__track"><div class="skill-bar__fill" data-width="78"></div></div>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-bar__label"><span>MySQL</span><span class="skill-bar__pct">80%</span></div>
-              <div class="skill-bar__track"><div class="skill-bar__fill" data-width="80"></div></div>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-bar__label"><span>Microservices / REST</span><span class="skill-bar__pct">75%</span></div>
-              <div class="skill-bar__track"><div class="skill-bar__fill" data-width="75"></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="skill-category glass-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="skill-category__header">
-            <span class="skill-category__icon">🏛️</span>
-            <h3>AEM & Enterprise</h3>
-          </div>
-          <div class="skill-bars">
-            <div class="skill-bar">
-              <div class="skill-bar__label"><span>AEM Sites (6.x)</span><span class="skill-bar__pct">80%</span></div>
-              <div class="skill-bar__track"><div class="skill-bar__fill" data-width="80"></div></div>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-bar__label"><span>Sling Models / HTL</span><span class="skill-bar__pct">78%</span></div>
-              <div class="skill-bar__track"><div class="skill-bar__fill" data-width="78"></div></div>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-bar__label"><span>OSGi Services</span><span class="skill-bar__pct">72%</span></div>
-              <div class="skill-bar__track"><div class="skill-bar__fill" data-width="72"></div></div>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-bar__label"><span>Adobe Journey Optimizer</span><span class="skill-bar__pct">70%</span></div>
-              <div class="skill-bar__track"><div class="skill-bar__fill" data-width="70"></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="skill-category glass-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="skill-category__header">
-            <span class="skill-category__icon">🛠️</span>
-            <h3>Tools & Frontend</h3>
-          </div>
-          <div class="skill-tags">
-            <span class="skill-tag">Git & GitHub</span>
-            <span class="skill-tag">Maven</span>
-            <span class="skill-tag">Postman</span>
-            <span class="skill-tag">IntelliJ IDEA</span>
-            <span class="skill-tag">VS Code</span>
-            <span class="skill-tag">HTML5 / CSS3</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">JSP</span>
-            <span class="skill-tag">Linux</span>
-            <span class="skill-tag">Agile / Scrum</span>
-            <span class="skill-tag">JDBC</span>
-            <span class="skill-tag">Collections / Streams</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- EXPERIENCE -->
-  <section class="section experience" id="experience">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <span class="section-label">03 — Experience</span>
-        <h2 class="section-title">My Journey</h2>
-      </div>
-      <div class="timeline">
-        <div class="timeline__item" data-aos="fade-right" data-aos-delay="100">
-          <div class="timeline__card glass-card">
-            <div class="timeline__meta">
-              <span class="timeline__date">Jun 2025 — Present</span>
-              <span class="timeline__badge">Full Time</span>
-            </div>
-            <h3 class="timeline__role">Java Backend Developer</h3>
-            <p class="timeline__company">Bajaj Finserv Direct Limited, Pune</p>
-            <p class="timeline__desc">Built 8+ custom AEM components using Sling Models and HTL (Sightly), reducing content-author effort by ~30% via reusable structures. Configured OSGi services and Sling workflows to automate publishing across 4 pipelines. Integrated Adobe Journey Optimizer and Adobe Target across 3 campaign workflows. Collaborated in 2-week Agile sprints with peer code reviews and clean Git branching.</p>
-            <div class="timeline__tags">
-              <span>Java</span><span>AEM</span><span>Sling Models</span><span>OSGi</span><span>Adobe Target</span>
-            </div>
-          </div>
-          <div class="timeline__dot"></div>
-        </div>
-        <div class="timeline__item timeline__item--right" data-aos="fade-left" data-aos-delay="200">
-          <div class="timeline__dot"></div>
-          <div class="timeline__card glass-card">
-            <div class="timeline__meta">
-              <span class="timeline__date">Jan 2025 — May 2025</span>
-              <span class="timeline__badge">Internship</span>
-            </div>
-            <h3 class="timeline__role">Backend Developer Intern</h3>
-            <p class="timeline__company">Software Scope Technology, Pune</p>
-            <p class="timeline__desc">Built 5+ RESTful APIs using Spring Boot MVC architecture with Hibernate/JPA persistence, handling 10,000+ records via CRUD and transaction management. Optimized 8+ SQL queries through indexing and join restructuring, reducing data-retrieval time by ~15%.</p>
-            <div class="timeline__tags">
-              <span>Java</span><span>Spring Boot</span><span>Hibernate</span><span>MySQL</span>
-            </div>
-          </div>
-        </div>
-        <div class="timeline__item" data-aos="fade-right" data-aos-delay="300">
-          <div class="timeline__card glass-card">
-            <div class="timeline__meta">
-              <span class="timeline__date">Aug 2021 — Aug 2025</span>
-              <span class="timeline__badge">Education</span>
-            </div>
-            <h3 class="timeline__role">B.Tech — Computer Science Engineering</h3>
-            <p class="timeline__company">MIT World Peace University (MIT-WPU), Pune</p>
-            <p class="timeline__desc">Focused on software engineering, backend development, OOP, databases, DSA, and scalable application development.</p>
-            <div class="timeline__tags">
-              <span>CGPA: 7.32</span><span>DSA</span><span>OOP</span><span>DBMS</span>
-            </div>
-          </div>
-          <div class="timeline__dot"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section class="section projects" id="projects">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <span class="section-label">04 — Projects</span>
-        <h2 class="section-title">Featured Work</h2>
-      </div>
-      <div class="projects__grid">
-        <div class="project-card glass-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="project-card__glow"></div>
-          <div class="project-card__header">
-            <div class="project-card__number">01</div>
-            <div class="project-card__links">
-              <a href="https://github.com/AayushKhadangale/smart-hospital" target="_blank" class="project-link" title="GitHub">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.93 10.93 0 0 1 5.74 0c2.18-1.48 3.14-1.17 3.14-1.17.63 1.57.23 2.73.11 3.02.74.8 1.18 1.82 1.18 3.07 0 4.41-2.69 5.38-5.25 5.66.41.36.78 1.07.78 2.15v3.19c0 .3.2.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
-              </a>
-            </div>
-          </div>
-          <div class="project-card__body">
-            <div class="project-card__icon">🏥</div>
-            <h3>Smart Hospital Management System</h3>
-            <p>RESTful APIs for 3 core modules — patient management, appointment scheduling, and billing — serving 4 user roles with Spring Security. Normalized MySQL schema (3NF) with 12+ endpoints. Reduced SQL query response time by ~20% via indexing.</p>
-          </div>
-          <div class="project-card__footer">
-            <div class="project-card__tags">
-              <span>Java</span><span>Spring Boot</span><span>Hibernate</span><span>MySQL</span><span>Spring Security</span>
-            </div>
-          </div>
-        </div>
-        <div class="project-card glass-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="project-card__glow"></div>
-          <div class="project-card__header">
-            <div class="project-card__number">02</div>
-            <div class="project-card__links">
-              <a href="https://github.com/AayushKhadangale/cosmic-energy" target="_blank" class="project-link" title="GitHub">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.93 10.93 0 0 1 5.74 0c2.18-1.48 3.14-1.17 3.14-1.17.63 1.57.23 2.73.11 3.02.74.8 1.18 1.82 1.18 3.07 0 4.41-2.69 5.38-5.25 5.66.41.36.78 1.07.78 2.15v3.19c0 .3.2.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
-              </a>
-            </div>
-          </div>
-          <div class="project-card__body">
-            <div class="project-card__icon">🌌</div>
-            <h3>Cosmic Energy — Mental Health App</h3>
-            <p>REST APIs tracking 6 daily health metrics per user with personalized wellness recommendations via a backend scoring engine. Role-based access control for 3 user types (admin, therapist, user) with isolated data handling.</p>
-          </div>
-          <div class="project-card__footer">
-            <div class="project-card__tags">
-              <span>Java</span><span>Spring Boot</span><span>MySQL</span><span>JavaScript</span><span>REST APIs</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CERTIFICATIONS -->
-  <section class="section certifications" id="certifications">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <span class="section-label">05 — Certifications</span>
-        <h2 class="section-title">Credentials</h2>
-      </div>
-      <div class="certs__grid">
-        <div class="cert-card glass-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="cert-card__icon">🏛️</div>
-          <div class="cert-card__body">
-            <h3>Adobe Experience Manager (AEM) Sites</h3>
-            <p class="cert-card__issuer">Adobe</p>
-            <p class="cert-card__date">2025</p>
-          </div>
-          <a href="#" class="cert-card__link">View ↗</a>
-        </div>
-        <div class="cert-card glass-card" data-aos="fade-up" data-aos-delay="150">
-          <div class="cert-card__icon">🎯</div>
-          <div class="cert-card__body">
-            <h3>Adobe Journey Optimizer &amp; Adobe Target</h3>
-            <p class="cert-card__issuer">Adobe</p>
-            <p class="cert-card__date">2025</p>
-          </div>
-          <a href="#" class="cert-card__link">View ↗</a>
-        </div>
-        <div class="cert-card glass-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="cert-card__icon">☕</div>
-          <div class="cert-card__body">
-            <h3>Java Full Stack Developer</h3>
-            <p class="cert-card__issuer">Exponent IT</p>
-            <p class="cert-card__date">2026</p>
-          </div>
-          <a href="#" class="cert-card__link">View ↗</a>
-        </div>
-        <div class="cert-card glass-card" data-aos="fade-up" data-aos-delay="250">
-          <div class="cert-card__icon">🌐</div>
-          <div class="cert-card__body">
-            <h3>Full Stack Web Developer</h3>
-            <p class="cert-card__issuer">Udemy</p>
-            <p class="cert-card__date">2022</p>
-          </div>
-          <a href="#" class="cert-card__link">View ↗</a>
-        </div>
-        <div class="cert-card glass-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="cert-card__icon">🏗️</div>
-          <div class="cert-card__body">
-            <h3>Software Architecture Fundamentals</h3>
-            <p class="cert-card__issuer">Coursera</p>
-            <p class="cert-card__date">2023</p>
-          </div>
-          <a href="#" class="cert-card__link">View ↗</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GITHUB -->
-  <section class="section github" id="github">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <span class="section-label">06 — GitHub</span>
-        <h2 class="section-title">Open Source</h2>
-      </div>
-      <p class="github__username" data-aos="fade-up">
-        <a href="https://github.com/AayushKhadangale" target="_blank">@AayushKhadangale</a>
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="hero-eyebrow reveal-up">
+        <span class="eyebrow-dot"></span>
+        Pune, India · Available for opportunities
       </p>
-      <div class="github__grid" data-aos="fade-up" data-aos-delay="100">
-        <div class="github__stats">
-          <div class="github__stat-card">
-            <div class="github__stat-title">GitHub Activity</div>
-            <div class="github__stat-numbers">
-              <div class="github__stat-item">
-                <div class="github__stat-num">2+</div>
-                <div class="github__stat-lbl">Repos</div>
-              </div>
-              <div class="github__stat-item">
-                <div class="github__stat-num">500+</div>
-                <div class="github__stat-lbl">Commits</div>
-              </div>
-              <div class="github__stat-item">
-                <div class="github__stat-num">Java</div>
-                <div class="github__stat-lbl">Top Language</div>
-              </div>
-              <div class="github__stat-item">
-                <div class="github__stat-num">2025</div>
-                <div class="github__stat-lbl">Active Since</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="github__langs">
-          <div class="github__langs-title">Languages Used</div>
-          <div class="lang-bar">
-            <div class="lang-bar__label"><span>Java</span><span class="lang-bar__pct">68%</span></div>
-            <div class="lang-bar__track"><div class="lang-bar__fill" data-width="68" style="background:#f89820"></div></div>
-          </div>
-          <div class="lang-bar">
-            <div class="lang-bar__label"><span>HTML/CSS</span><span class="lang-bar__pct">18%</span></div>
-            <div class="lang-bar__track"><div class="lang-bar__fill" data-width="18" style="background:#e44d26"></div></div>
-          </div>
-          <div class="lang-bar">
-            <div class="lang-bar__label"><span>JavaScript</span><span class="lang-bar__pct">10%</span></div>
-            <div class="lang-bar__track"><div class="lang-bar__fill" data-width="10" style="background:#f0db4f"></div></div>
-          </div>
-          <div class="lang-bar">
-            <div class="lang-bar__label"><span>SQL</span><span class="lang-bar__pct">4%</span></div>
-            <div class="lang-bar__track"><div class="lang-bar__fill" data-width="4" style="background:#336791"></div></div>
-          </div>
-        </div>
+      <h1 class="hero-name reveal-up delay-1">
+        <span class="name-first">Aayush</span><br />
+        <em class="name-last typed-text" data-text="Khadangale"></em>
+      </h1>
+      <p class="hero-role reveal-up delay-2">Java Backend Developer <span class="sep">·</span> Full Stack Engineer</p>
+      <p class="hero-desc reveal-up delay-3">
+        Building enterprise-grade systems at <strong>Bajaj Finserv</strong>. Passionate about scalable architectures,
+        clean APIs, and AI-powered applications.
+      </p>
+      <div class="hero-actions reveal-up delay-4">
+        <a href="#projects" class="btn-primary">
+          <span>View Projects</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="MainResume.pdf" download="MainResume.pdf" class="btn-resume-hero">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Download CV</span>
+        </a>
+        <a href="#contact" class="btn-ghost">Contact Me</a>
       </div>
-      <div class="github__contrib-section" data-aos="fade-up" data-aos-delay="150" style="margin-top:1.5rem">
-        <div class="github__contrib-title">Contribution Activity (Past Year)</div>
-        <div class="contrib-grid" id="contribGrid"></div>
-      </div>
-      <div class="github__cta" data-aos="fade-up" data-aos-delay="200" style="margin-top:2rem">
-        <a href="https://github.com/AayushKhadangale" target="_blank" class="btn btn--outline">View GitHub Profile →</a>
+      <div class="hero-socials reveal-up delay-5">
+        <a href="https://github.com/AayushKhadangale" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/aayushkh28" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="mailto:aayushkhadangale2642@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </a>
       </div>
     </div>
-  </section>
+    <div class="hero-image-wrap reveal-right delay-2">
+      <div class="image-frame">
+        <div class="image-ring ring-1"></div>
+        <div class="image-ring ring-2"></div>
+        <div class="image-ring ring-3"></div>
+        <div class="image-placeholder"><img src="{css,js,assets}/AayushIMG.png" height="1195" width="896"/>
+          x<img src="" alt="Aayush Khadangale" id="profileImg" />
+          <div class="img-fallback">
+            <span class="initials-display"></span>
+          </div>
+        </div>
+        <div class="image-glow"></div>
+      </div>
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Available · Pune, India</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
 
-  <!-- CONTACT -->
-  <section class="section contact" id="contact">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <span class="section-label">07 — Contact</span>
-        <h2 class="section-title">Get In Touch</h2>
+<!-- ═══════════════════════════════ ABOUT ═══════════════════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="section-label reveal-up">About</div>
+    <div class="about-grid">
+      <div class="about-text-col">
+        <h2 class="section-heading reveal-up">Crafting <em>systems</em><br />that scale.</h2>
+        <p class="about-body reveal-up delay-1">
+          I'm a Java Backend Developer currently working at <strong>Bajaj Finserv Direct Limited</strong>, where I build
+          enterprise-grade AEM components, integrate Adobe marketing platforms, and architect scalable backend services
+          in fast-paced Agile environments.
+        </p>
+        <p class="about-body reveal-up delay-2">
+          My foundation lies in <strong>Spring Boot REST APIs</strong>, Hibernate/JPA, and MySQL optimisation—writing clean,
+          testable code that thrives under production load. I have a growing passion for
+          <strong>AI-powered applications</strong> and microservices architectures, constantly exploring how intelligent
+          automation can streamline enterprise workflows.
+        </p>
+        <p class="about-body reveal-up delay-3">
+          A Computer Science graduate from <strong>MIT World Peace University, Pune</strong>, I bring both academic
+          rigour and real-world delivery experience across internships and full-time roles.
+        </p>
       </div>
-      <div class="contact__grid">
-        <div class="contact__info" data-aos="fade-right" data-aos-delay="100">
-          <p class="contact__intro">I'm always open to discussing new projects, engineering roles, and opportunities to be part of great teams.</p>
-          <div class="contact__details">
-            <div class="contact__item">
-              <span class="contact__item-icon">📧</span>
-              <a href="mailto:aayushkhadangale2642@gmail.com">aayushkhadangale2642@gmail.com</a>
-            </div>
-            <div class="contact__item">
-              <span class="contact__item-icon">📱</span>
-              <a href="tel:+917057900884">+91-7057900884</a>
-            </div>
-            <div class="contact__item">
-              <span class="contact__item-icon">📍</span>
-              <span>Pune, Maharashtra, India</span>
-            </div>
-            <div class="contact__item">
-              <span class="contact__item-icon">💼</span>
-              <a href="https://linkedin.com/in/aayush-khadangale" target="_blank">linkedin.com/in/aayush-khadangale</a>
-            </div>
+      <div class="about-stats-col reveal-up delay-2">
+        <div class="stat-card">
+          <span class="stat-number">8+</span>
+          <span class="stat-label">AEM Components Built</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">5+</span>
+          <span class="stat-label">REST APIs Delivered</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">10K+</span>
+          <span class="stat-label">DB Records Managed</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">3</span>
+          <span class="stat-label">Production Projects</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SKILLS ═══════════════════════════════ -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label reveal-up">Expertise</div>
+    <h2 class="section-heading reveal-up">Tech <em>Stack</em></h2>
+    <div class="skills-grid">
+
+      <div class="skill-category reveal-up delay-1">
+        <div class="skill-cat-header">
+          <div class="skill-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <span>Backend</span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">Java 8/17</span><span class="tag">Spring Boot</span><span class="tag">Spring MVC</span>
+          <span class="tag">Hibernate</span><span class="tag">JDBC</span><span class="tag">Microservices</span><span class="tag">RESTful APIs</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal-up delay-2">
+        <div class="skill-cat-header">
+          <div class="skill-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <span>CMS & Enterprise</span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">Adobe AEM 6.x</span><span class="tag">Sling Models</span><span class="tag">OSGi Services</span>
+          <span class="tag">Adobe Journey Optimizer</span><span class="tag">Adobe Target</span><span class="tag">HTL/Sightly</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal-up delay-3">
+        <div class="skill-cat-header">
+          <div class="skill-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <span>Database</span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">MySQL</span><span class="tag">Query Optimisation</span><span class="tag">Indexing</span>
+          <span class="tag">Normalization (3NF)</span><span class="tag">Joins</span><span class="tag">Transactions</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal-up delay-1">
+        <div class="skill-cat-header">
+          <div class="skill-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <span>Frontend</span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span><span class="tag">JSP</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal-up delay-2">
+        <div class="skill-cat-header">
+          <div class="skill-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          </div>
+          <span>Java Core</span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">OOP</span><span class="tag">Collections</span><span class="tag">Multithreading</span>
+          <span class="tag">Streams & Lambdas</span><span class="tag">Exception Handling</span>
+        </div>
+      </div>
+
+      <div class="skill-category reveal-up delay-3">
+        <div class="skill-cat-header">
+          <div class="skill-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <span>Tools & DevOps</span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">Git & GitHub</span><span class="tag">Maven</span><span class="tag">Postman</span>
+          <span class="tag">IntelliJ IDEA</span><span class="tag">VS Code</span><span class="tag">MVC Architecture</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ EXPERIENCE ═══════════════════════════ -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label reveal-up">Career</div>
+    <h2 class="section-heading reveal-up">Experience <em>Timeline</em></h2>
+    <div class="timeline">
+
+      <div class="timeline-item reveal-up delay-1">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-meta">
+            <span class="tl-date">Jun 2025 – Present</span>
+            <span class="tl-badge current">Current</span>
+          </div>
+          <h3 class="tl-role">Java Backend Developer</h3>
+          <p class="tl-company">Bajaj Finserv Direct Limited · Pune</p>
+          <ul class="tl-points">
+            <li>Built 8+ custom AEM components using Sling Models and HTL (Sightly), reducing content-author effort by ~30% through reusable template structures.</li>
+            <li>Configured OSGi services and Sling workflows to automate content publishing across 4 pipelines, eliminating manual deployment steps.</li>
+            <li>Integrated Adobe Journey Optimizer and Adobe Target across 3 campaign workflows, improving audience targeting and personalisation accuracy.</li>
+            <li>Collaborated in 2-week Agile sprints; maintained zero merge conflicts with clean Git branching strategy.</li>
+          </ul>
+          <div class="tl-tech">
+            <span>AEM 6.x</span><span>Sling Models</span><span>OSGi</span><span>Adobe Target</span><span>Java</span>
           </div>
         </div>
-        <div class="contact__form-wrap" data-aos="fade-left" data-aos-delay="200">
-          <form class="contact__form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-            <div class="form-group">
-              <input type="text" id="formName" name="name" class="form-input" placeholder=" " required />
-              <label for="formName" class="form-label">Your Name</label>
-            </div>
-            <div class="form-group">
-              <input type="email" id="formEmail" name="email" class="form-input" placeholder=" " required />
-              <label for="formEmail" class="form-label">Your Email</label>
-            </div>
-            <div class="form-group">
-              <input type="text" id="formSubject" name="subject" class="form-input" placeholder=" " />
-              <label for="formSubject" class="form-label">Subject</label>
-            </div>
-            <div class="form-group">
-              <textarea id="formMessage" name="message" class="form-input form-textarea" placeholder=" " required></textarea>
-              <label for="formMessage" class="form-label">Message</label>
-            </div>
-            <button type="submit" class="btn btn--primary btn--full">
-              <span>Send Message</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-            <p class="form-note">
-              ⚡ Replace <code>YOUR_FORM_ID</code> in the form action with your <a href="https://formspree.io" target="_blank">Formspree</a> ID to enable email delivery.
-            </p>
-          </form>
+      </div>
+
+      <div class="timeline-item reveal-up delay-2">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-meta">
+            <span class="tl-date">Jan 2025 – May 2025</span>
+            <span class="tl-badge">Internship</span>
+          </div>
+          <h3 class="tl-role">Java Backend Developer Intern</h3>
+          <p class="tl-company">Software Scope Technology · Pune</p>
+          <ul class="tl-points">
+            <li>Built 5+ RESTful APIs using Spring Boot following MVC architecture, supporting end-to-end core business workflows.</li>
+            <li>Implemented Hibernate/JPA persistence layer with MySQL, handling 10,000+ records via CRUD, transactions, and cascading relationships.</li>
+            <li>Optimised 8+ SQL queries through strategic indexing and join restructuring, reducing data-retrieval time by ~15%.</li>
+          </ul>
+          <div class="tl-tech">
+            <span>Spring Boot</span><span>Hibernate</span><span>MySQL</span><span>REST API</span><span>Maven</span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
 
-</main>
+    </div>
+  </div>
+</section>
 
-<footer class="footer">
-  <div class="footer__container">
-    <div class="footer__left">
-      <a href="#hero" class="nav__logo">AK<span style="color:var(--accent)">.</span></a>
-      <p>Built with ♥ and clean code.</p>
+<!-- ═══════════════════════════════ PROJECTS ═══════════════════════════════ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label reveal-up">Work</div>
+    <h2 class="section-heading reveal-up">Featured <em>Projects</em></h2>
+    <div class="projects-grid">
+
+      <div class="project-card reveal-up delay-1">
+        <div class="project-num">01</div>
+        <div class="project-top">
+          <div class="project-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <a href="https://github.com/AayushKhadangale/Hospital_Management_System.git" target="_blank" class="project-link" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+        </div>
+        <h3 class="project-title">Hospital Management System</h3>
+        <p class="project-desc">Web-based hospital platform with RESTful APIs for patient management, appointment scheduling, and billing. Role-based access control, normalised MySQL schema (3NF), and ~20% query performance improvement via indexing.</p>
+        <div class="project-stack">
+          <span>Java</span><span>Spring Boot</span><span>Hibernate</span><span>MySQL</span><span>JSP</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal-up delay-2">
+        <div class="project-num">02</div>
+        <div class="project-top">
+          <div class="project-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <a href="https://github.com/AayushKhadangale/CosmicCalm-Mental-Wellness-System.git" target="_blank" class="project-link" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+        </div>
+        <h3 class="project-title">Cosmic Calm — Mental Wellness</h3>
+        <p class="project-desc">Mental wellness application tracking 6 daily health metrics per user, delivering personalised recommendations via a backend scoring engine. Role-based access for admin, therapist, and user personas.</p>
+        <div class="project-stack">
+          <span>Java</span><span>Spring Boot</span><span>MySQL</span><span>JSP</span><span>REST API</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal-up delay-3">
+        <div class="project-num">03</div>
+        <div class="project-top">
+          <div class="project-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <a href="https://github.com/AayushKhadangale/LLM_Enabled_CRM-BALIC-.git" target="_blank" class="project-link" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+        </div>
+        <h3 class="project-title">LLM-Enabled CRM System</h3>
+        <p class="project-desc">AI-powered enterprise CRM integrating Large Language Model capabilities for intelligent customer interaction, workflow automation, and data-driven decision making — built for BALIC enterprise workflows.</p>
+        <div class="project-stack">
+          <span>Java</span><span>Spring Boot</span><span>LLM</span><span>MySQL</span><span>REST API</span>
+        </div>
+      </div>
+
     </div>
-    <div class="footer__socials">
-      <a href="https://github.com/AayushKhadangale" target="_blank" class="social-icon" aria-label="GitHub">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55v-1.93c-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.17a10.93 10.93 0 0 1 5.74 0c2.18-1.48 3.14-1.17 3.14-1.17.63 1.57.23 2.73.11 3.02.74.8 1.18 1.82 1.18 3.07 0 4.41-2.69 5.38-5.25 5.66.41.36.78 1.07.78 2.15v3.19c0 .3.2.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
-      </a>
-      <a href="https://linkedin.com/in/aayush-khadangale" target="_blank" class="social-icon" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.58 0 4.24 2.36 4.24 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z"/></svg>
-      </a>
-      <a href="mailto:aayushkhadangale2642@gmail.com" class="social-icon" aria-label="Email">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 2-8 5-8-5h16zm0 12H4V8.236l8 5 8-5V18z"/></svg>
-      </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CERTIFICATIONS ═══════════════════════ -->
+<section id="certifications">
+  <div class="container">
+    <div class="section-label reveal-up">Recognition</div>
+    <h2 class="section-heading reveal-up">Certifications <em>&amp; Education</em></h2>
+    <div class="cert-grid">
+
+      <div class="cert-card reveal-up delay-1">
+        <div class="cert-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div class="cert-body">
+          <span class="cert-issuer">Adobe · 2025</span>
+          <h3 class="cert-name">Adobe Experience Manager (AEM) Sites</h3>
+          <p class="cert-desc">Official certification for AEM component development, Sling framework, and content architecture.</p>
+        </div>
+      </div>
+
+      <div class="cert-card reveal-up delay-2">
+        <div class="cert-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div class="cert-body">
+          <span class="cert-issuer">Adobe · 2025</span>
+          <h3 class="cert-name">Adobe Journey Optimizer &amp; Adobe Target</h3>
+          <p class="cert-desc">Certified in audience personalisation, campaign orchestration, and A/B testing at enterprise scale.</p>
+        </div>
+      </div>
+
+      <div class="cert-card reveal-up delay-3">
+        <div class="cert-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div class="cert-body">
+          <span class="cert-issuer">Exponent IT · 2026</span>
+          <h3 class="cert-name">Java Full Stack Developer</h3>
+          <p class="cert-desc">Comprehensive full-stack certification covering Java backend, frontend integration, and deployment practices.</p>
+        </div>
+      </div>
+
+      <div class="cert-card reveal-up delay-1 edu-card">
+        <div class="cert-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="cert-body">
+          <span class="cert-issuer">Aug 2021 – Aug 2025 · CGPA: 7.32/10</span>
+          <h3 class="cert-name">B.Tech — Computer Science Engineering</h3>
+          <p class="cert-desc">MIT World Peace University (MIT-WPU), Pune · Specialisation in backend systems and enterprise software.</p>
+        </div>
+      </div>
+
     </div>
-    <div class="footer__right">
-      <p>© <span id="year"></span> Aayush Khadangale. All rights reserved.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CONTACT ═══════════════════════════════ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label reveal-up">Get in Touch</div>
+    <h2 class="section-heading reveal-up">Let's <em>Connect</em></h2>
+    <p class="contact-intro reveal-up delay-1">
+      Open to new opportunities, collaborations, and conversations around enterprise software,
+      backend architecture, and AI-powered systems.
+    </p>
+    <div class="contact-cards reveal-up delay-2">
+      <a href="mailto:aayushkhadangale2642@gmail.com" class="contact-card">
+        <div class="cc-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+        <div class="cc-body"><span class="cc-label">Email</span><span class="cc-value">aayushkhadangale2642@gmail.com</span></div>
+        <div class="cc-arrow">→</div>
+      </a>
+      <a href="https://www.linkedin.com/in/aayushkh28" target="_blank" rel="noopener" class="contact-card">
+        <div class="cc-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+        <div class="cc-body"><span class="cc-label">LinkedIn</span><span class="cc-value">linkedin.com/in/aayushkh28</span></div>
+        <div class="cc-arrow">→</div>
+      </a>
+      <a href="https://github.com/AayushKhadangale" target="_blank" rel="noopener" class="contact-card">
+        <div class="cc-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></div>
+        <div class="cc-body"><span class="cc-label">GitHub</span><span class="cc-value">github.com/AayushKhadangale</span></div>
+        <div class="cc-arrow">→</div>
+      </a>
+      <div class="contact-card phone-card">
+        <div class="cc-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+        <div class="cc-body"><span class="cc-label">Phone</span><span class="cc-value">+91 7057900884</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer id="footer">
+  <div class="footer-inner">
+    <a class="nav-logo" href="#hero">AK<span class="dot">.</span></a>
+    <p class="footer-copy">Designed &amp; Developed by <strong>Aayush Khadangale</strong></p>
+    <div class="footer-links">
+      <a href="https://github.com/AayushKhadangale" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/aayushkh28" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:aayushkhadangale2642@gmail.com">Email</a>
     </div>
   </div>
 </footer>
 
-<script>
-  // ─── LOADER ───
-  window.addEventListener('load', () => {
-    setTimeout(() => document.getElementById('loader').classList.add('hide'), 1400);
-  });
-
-  // ─── YEAR ───
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // ─── CURSOR ───
-  const dot = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  document.addEventListener('mousemove', e => {
-    dot.style.left = ring.style.left = e.clientX + 'px';
-    dot.style.top = ring.style.top = e.clientY + 'px';
-  });
-
-  // ─── NAV SCROLL ───
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 20);
-    // Active link
-    const sections = document.querySelectorAll('section[id]');
-    let current = '';
-    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
-    document.querySelectorAll('.nav__link').forEach(l => {
-      l.classList.toggle('active', l.getAttribute('href') === '#' + current);
-    });
-  });
-
-  // ─── HAMBURGER ───
-  const ham = document.getElementById('hamburger');
-  const mob = document.getElementById('mobileMenu');
-  ham.addEventListener('click', () => mob.classList.toggle('open'));
-  document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mob.classList.remove('open')));
-
-  // ─── THEME TOGGLE ───
-  const toggle = document.getElementById('themeToggle');
-  let dark = true;
-  toggle.addEventListener('click', () => {
-    dark = !dark;
-    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-    toggle.textContent = dark ? '☀' : '🌙';
-  });
-
-  // ─── TYPED TEXT ───
-  const phrases = ['Java Backend Developer', 'AEM Developer', 'Spring Boot Engineer', 'REST API Builder'];
-  let pi = 0, ci = 0, deleting = false;
-  const typed = document.getElementById('typedText');
-  function typeLoop() {
-    const phrase = phrases[pi];
-    if (!deleting) {
-      typed.textContent = phrase.slice(0, ++ci);
-      if (ci === phrase.length) { deleting = true; setTimeout(typeLoop, 1800); return; }
-    } else {
-      typed.textContent = phrase.slice(0, --ci);
-      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
-    }
-    setTimeout(typeLoop, deleting ? 60 : 100);
-  }
-  setTimeout(typeLoop, 1600);
-
-  // ─── PARTICLES ───
-  const canvas = document.getElementById('particlesCanvas');
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-  for (let i = 0; i < 70; i++) {
-    particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4, r: Math.random() * 1.8 + .4 });
-  }
-  function drawParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(122,162,247,0.35)';
-      ctx.fill();
-    });
-    requestAnimationFrame(drawParticles);
-  }
-  drawParticles();
-
-  // ─── PHOTO UPLOAD ───
-  const photoInput = document.getElementById('photoInput');
-  const avatarImg = document.getElementById('avatarImg');
-  const avatarPlaceholder = document.getElementById('avatarPlaceholder');
-  photoInput.addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-      avatarImg.src = ev.target.result;
-      avatarImg.style.display = 'block';
-      avatarPlaceholder.style.display = 'none';
-    };
-    reader.readAsDataURL(file);
-  });
-  // Also allow clicking the image to re-upload
-  avatarImg.addEventListener('click', () => photoInput.click());
-
-  // ─── AOS (Intersection Observer) ───
-  const aosEls = document.querySelectorAll('[data-aos]');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('aos-animate'); } });
-  }, { threshold: 0.12 });
-  aosEls.forEach(el => observer.observe(el));
-
-  // ─── SKILL BAR ANIMATION ───
-  const barObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.querySelectorAll('.skill-bar__fill, .lang-bar__fill').forEach(fill => {
-          fill.style.width = fill.dataset.width + '%';
-        });
-        barObserver.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.2 });
-  document.querySelectorAll('.skill-category, .github__langs').forEach(el => barObserver.observe(el));
-
-  // ─── STAT COUNTER ───
-  const statObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.querySelectorAll('.stat-number').forEach(el => {
-          const target = +el.dataset.target;
-          let cur = 0;
-          const step = Math.ceil(target / 40);
-          const t = setInterval(() => {
-            cur = Math.min(cur + step, target);
-            el.textContent = cur;
-            if (cur >= target) clearInterval(t);
-          }, 30);
-        });
-        statObserver.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  document.querySelectorAll('.about__stats').forEach(el => statObserver.observe(el));
-
-  // ─── CONTRIBUTION GRID ───
-  const grid = document.getElementById('contribGrid');
-  const levels = [0, 0, 0, 1, 1, 1, 2, 2, 3, 4];
-  for (let i = 0; i < 52 * 7; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'contrib-cell';
-    // Simulate some activity
-    const r = Math.random();
-    if (r > 0.72) cell.classList.add('l' + levels[Math.floor(Math.random() * levels.length + 4)]);
-    else if (r > 0.55) cell.classList.add('l1');
-    grid.appendChild(cell);
-  }
-</script>
+<script src="js/main.js"></script>
 </body>
 </html>
